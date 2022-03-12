@@ -41,3 +41,5 @@ Give examples
 Author/Website URL, Content used from the source, Year published (if available), and Date accessed.
 
 1. Someone on seekpng for user-profile placeholder image (https://www.seekpng.com/ipng/u2y3q8t4t4i1q8u2_placeholder-image-person-jpg/), which I've also used for A3. Accesesd 14:59 27-Feb-2022
+
+1. Footer adapted from A3 @ 20:27 11-Mar-2022
