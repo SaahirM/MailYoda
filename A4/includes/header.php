@@ -2,6 +2,7 @@
 	// INITIALIZATION
 	ob_start();
 	session_start();
+	$_SESSION['user-token'] = hash("sha3-512", session_id());
 
 	// IMPORTS
 	require "includes/functions.php";

@@ -1,6 +1,7 @@
 <?php
     // CONSTANTS
     define("CURR_FILE", basename($_SERVER['PHP_SELF']));
+    define("ROOT", "");
 
     // IMPORT
     require_once "includes/header.php";
@@ -10,6 +11,8 @@
 
     <?php if (!isset($_SESSION['user-name'])) { ?>
         <form action="includes/login.php" method="post" class="border border-dark p-5 my-4">
+            <h2>Login to MailYoda</h2>
+            <input type="hidden" name="token" value="<?php echo $_SESSION['user-token']; ?>">
             <div class="row my-2">
                 <label class="form-label" for="email">Email</label>
                 <input class="form-control" type="email" name="email" id="email">
