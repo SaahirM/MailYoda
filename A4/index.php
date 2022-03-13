@@ -27,7 +27,18 @@
             <p>New to this MailYoda? <a href="register.php">Register here.</a></p>
         </form>
 
-    <?php } ?>
+    <?php } else if (!isset($_REQUEST['view']) || $_REQUEST['view'] == 'inbox') { 
+        include "includes/inbox.php";
+
+    } else if ($_REQUEST['view'] == 'sentdrafts') { 
+        include "includes/sent-drafts.php";        
+
+    } else if ($_REQUEST['view'] == 'compose') { 
+        include "includes/compose.php";        
+        
+    } else { // Default to inbox view
+        include "includes/inbox.php";
+    } ?>
 
 </main>
 
