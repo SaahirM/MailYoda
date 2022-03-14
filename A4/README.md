@@ -44,4 +44,11 @@ Author/Website URL, Content used from the source, Year published (if available),
 
 1. Footer adapted from A3 @ 20:27 11-Mar-2022
 
-1. php docs for php syntax: password_verify @ 20:52 12-Mar-2022, unset @ 23:12 12-Mar-2022
+1. php docs for php syntax: password_verify @ 20:52 12-Mar-2022, unset @ 23:12 12-Mar-2022, intval & is_numeric @ 20:46 14-Mar-2022
+
+1. zyBooks for php syntax throughout
+
+## Assumptions
+1. Users won't register with dupe emails
+
+1. Specific phone number format. Country code, area code, number always 1 digit, 3 digits, 7 digits respectively. All parts always present

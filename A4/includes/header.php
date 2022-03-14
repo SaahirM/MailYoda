@@ -6,7 +6,7 @@
 
 	// IMPORTS
 	require "includes/functions.php";
-	include "includes/db.php";
+	require "includes/db.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
