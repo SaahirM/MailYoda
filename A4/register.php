@@ -76,33 +76,33 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['token'])) {
 
 <main class="container">
 	<form action="register.php" method="post" class="border border-dark row p-5 my-4" enctype="multipart/form-data">
-            <h2>Regsiter for a MailYoda Account</h2>
+            <h2>Register for a MailYoda Account</h2>
             <input type="hidden" name="token" value="<?php echo $_SESSION['user-token']; ?>">
             <div class="col-12 my-2">
                 <label class="form-label" for="email">Email</label>
-                <input class="form-control" type="email" name="email" id="email">
+                <input class="form-control" type="email" name="email" id="email" required>
             </div>
             <div class="col-12 row row-cols-1 row-cols-md-2 pe-0">
 				<div class="pe-0">
 					<label class="form-label" for="fname">First Name</label>
-					<input class="form-control" type="text" name="fname" id="fname">
+					<input class="form-control" type="text" name="fname" id="fname" required>
 				</div>
 				<div class="pe-0">
 					<label class="form-label" for="lname">Last Name</label>
-					<input class="form-control" type="text" name="lname" id="lname">
+					<input class="form-control" type="text" name="lname" id="lname" required>
 				</div>
             </div>
             <div class="col-12 my-2">
                 <label class="form-label" for="pass">Password</label>
-                <input class="form-control" type="password" name="pass" id="pass">
+                <input class="form-control" type="password" name="pass" id="pass" required>
             </div>
             <div class="col-12 my-2">
                 <label class="form-label" for="num">Phone Number</label>
-				<input class="form-control" type="tel" name="num" id="num">
+				<input class="form-control" type="tel" name="num" id="num" required>
             </div>
             <div class="col-12 my-2">
                 <label class="form-label" for="pic">Upload Profile Image</label>
-                <input class="form-control" type="file" name="pic" id="pic">
+                <input class="form-control" type="file" name="pic" id="pic" required>
             </div>
             <div class="col-12 my-2 justify-content-end">
                 <input class="btn btn-success col-12 col-md-3" type="submit" value="Register">
