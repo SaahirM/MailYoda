@@ -36,7 +36,7 @@
 		global $DB;
 		
 		// Get all emails from DB
-		$allEmails = $DB->get_all_email_previews($_SESSION['user-id']);
+		$allEmails = $DB->get_all_email_previews($_SESSION['user-id'], 'inbox');
 
 		// Format them and echo
 		if (is_array($allEmails)) {
@@ -65,7 +65,7 @@
 		global $DB;
 
 		// Try getting email data from db
-		$email = $DB->get_email($emailID, $_SESSION['user-id']);
+		$email = $DB->get_email($emailID, $_SESSION['user-id'], 'inbox');
 
 		// Display result
 		if (is_array($email)) {
@@ -78,6 +78,68 @@
 						<p class="card-text"><?php echo $email['content']; ?></p>
 					</div>
 					<div class="card-footer">Sent <?php echo $email['dateTime']; ?></div>
+				</div>
+
+			<?php
+		} else {
+			display_alert($email, "danger", "Error fetching email");
+		}
+	}
+
+	/**
+	 * Fetches and displays all sent email subject-lines
+	 */
+	function generate_sentdrafts_email_list() {
+
+		// Make sure we have a database
+		global $DB;
+		
+		// Get all emails from DB
+		$allEmails = $DB->get_all_email_previews($_SESSION['user-id'], 'outbox');
+
+		// Format them and echo
+		if (is_array($allEmails)) {
+			foreach ($allEmails as $email) {
+				?>
+					<a href="index.php?view=sentdrafts&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
+						<span><?php echo $email['subj']; ?></span>
+						<div class="vr ms-auto"></div>
+						<span><?php echo $email['receiver']; ?></span>
+					</a>
+				<?php
+			}
+		} else {
+			display_alert($allEmails, "danger", "Error fetching emails");
+		}
+	}
+
+	/**
+	 * Fetches information about a sent/draft email with given ID
+	 * and displays it
+	 * @param integer $emailID ID of the email to fetch
+	 */
+	function display_sentdrafts_email($emailID) {
+		
+		// Make sure we have a database
+		global $DB;
+
+		// Try getting email data from db
+		$email = $DB->get_email($emailID, $_SESSION['user-id'], 'outbox');
+
+		// Display result
+		if (is_array($email)) {
+			?>
+
+				<div class="card">
+					<div class="card-header">To <?php echo $email['receiver']; ?></div>
+					<div class="card-body">
+						<h3 class="card-title"><?php echo $email['subj']; ?></h3>
+						<p class="card-text"><?php echo $email['content']; ?></p>
+					</div>
+					<div class="card-footer">
+						<?php echo $email['isDraft'] ? "Saved" : "Sent"; ?>
+						<?php echo $email['dateTime']; ?>
+					</div>
 				</div>
 
 			<?php

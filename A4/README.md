@@ -48,6 +48,8 @@ Author/Website URL, Content used from the source, Year published (if available),
 
 1. zyBooks for php syntax throughout
 
+1. This stack-overflow thread (https://stackoverflow.com/questions/17798835/auto-increment-skipping-numbers) to fix a MySQL auto_increment bug @ 21:24 16-Mar-2022
+
 ## Assumptions
 1. Users won't register with dupe emails
 

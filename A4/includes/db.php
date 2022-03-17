@@ -156,20 +156,34 @@
 		 * @return array|string Assoc-array of all email subjects
 		 * 						and senders or error string
 		 */
-		function get_all_email_previews($ID) {
+		function get_all_email_previews($ID, $view) {
 
 			// Validate input data
 			if (!is_numeric($ID)) return "Invalid User ID";
 
+			// Choose appropriate query
+			if ($view == 'inbox') {
+				$qry = "SELECT
+							je_email_id AS ID,
+							je_email_from_email AS sender,
+							je_email_subject AS subj
+						FROM je_inbox
+						WHERE je_email_to_id = {$ID};";
+
+			} else if ($view = 'outbox') {
+				$qry = "SELECT
+							je_sentdraft_id AS ID,
+							je_sentdraft_to_email AS receiver,
+							je_sentdraft_subject AS subj
+						FROM je_email_sentdrafts
+						WHERE je_sentdraft_from_id = {$ID};";
+			} else {
+				return "Invalid view entered";
+			}
+
+
 			// Make query
-			$result = $this->mySqlObj->query(
-				"SELECT
-					je_email_id AS ID,
-					je_email_from_email AS sender,
-					je_email_subject AS subj
-				FROM je_inbox
-				WHERE je_email_to_id = {$ID};"
-			);
+			$result = $this->mySqlObj->query($qry);
 			if (!$result) return $this->mySqlObj->error;
 			
 			// Throw all results into an array to return
@@ -180,28 +194,47 @@
 			return $allEmails;
 		}
 
-		function get_email($emailID, $userID) {
+		function get_email($emailID, $userID, $view) {
 
 			// Validate input data
 			if (!is_numeric($emailID) || !is_numeric($userID)) return "Invalid ID";
 
+			// Choose appropriate query
+			if ($view == 'inbox') {
+				$qry = "SELECT
+							je_email_from_email AS sender,
+							je_email_subject AS subj,
+							je_email_content AS content,
+							je_email_enc AS isEncrypted,
+							je_date_received AS dateTime
+						FROM je_inbox
+						WHERE
+							je_email_id = {$emailID}
+							AND je_email_to_id = {$userID};";
+
+			} else if ($view == 'outbox') {
+				$qry = "SELECT
+							je_sentdraft_to_email AS receiver,
+							je_sentdraft_subject AS subj,
+							je_sentdraft_content AS content,
+							je_sentdraft_draft AS isDraft,
+							je_sentdraft_enc AS isEncrypted,
+							je_sentdraft_datetime AS dateTime
+						FROM je_email_sentdrafts
+						WHERE
+							je_sentdraft_id = {$emailID}
+							AND je_sentdraft_from_id = {$userID};";
+
+			} else {
+				return "Invalid view entered";
+			}
+
 			// Query for email
-			$result = $this->mySqlObj->query(
-				"SELECT
-					je_email_from_email AS sender,
-					je_email_subject AS subj,
-					je_email_content AS content,
-					je_email_enc AS isEncrypted,
-					je_date_received AS dateTime
-				FROM je_inbox
-				WHERE
-					je_email_id = {$emailID}
-					AND je_email_to_id = {$userID};"
-			);
+			$result = $this->mySqlObj->query($qry);
 
 			// Return appropriate result
 			if (!$result) return $this->mySqlObj->error;
-			else if ($result->num_rows === 0) return "Email may not exist or you are not authorized to see this email";
+			else if ($result->num_rows === 0) return "Email does not exist in this $view";
 			else return $result->fetch_assoc();
 		}
 
