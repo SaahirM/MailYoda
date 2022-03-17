@@ -149,6 +149,62 @@
 			return $ID;
 		}
 
+		/**
+		 * Queries database for all emails sent to
+		 * given user ID
+		 * @param integer $ID ID of user whose inbox we're getting
+		 * @return array|string Assoc-array of all email subjects
+		 * 						and senders or error string
+		 */
+		function get_all_email_previews($ID) {
+
+			// Validate input data
+			if (!is_numeric($ID)) return "Invalid User ID";
+
+			// Make query
+			$result = $this->mySqlObj->query(
+				"SELECT
+					je_email_id AS ID,
+					je_email_from_email AS sender,
+					je_email_subject AS subj
+				FROM je_inbox
+				WHERE je_email_to_id = {$ID};"
+			);
+			if (!$result) return $this->mySqlObj->error;
+			
+			// Throw all results into an array to return
+			$allEmails = [];
+			while ($email = $result->fetch_assoc()) {
+				array_push($allEmails, $email);
+			}
+			return $allEmails;
+		}
+
+		function get_email($emailID, $userID) {
+
+			// Validate input data
+			if (!is_numeric($emailID) || !is_numeric($userID)) return "Invalid ID";
+
+			// Query for email
+			$result = $this->mySqlObj->query(
+				"SELECT
+					je_email_from_email AS sender,
+					je_email_subject AS subj,
+					je_email_content AS content,
+					je_email_enc AS isEncrypted,
+					je_date_received AS dateTime
+				FROM je_inbox
+				WHERE
+					je_email_id = {$emailID}
+					AND je_email_to_id = {$userID};"
+			);
+
+			// Return appropriate result
+			if (!$result) return $this->mySqlObj->error;
+			else if ($result->num_rows === 0) return "Email may not exist or you are not authorized to see this email";
+			else return $result->fetch_assoc();
+		}
+
 	}
 
 	// User object?

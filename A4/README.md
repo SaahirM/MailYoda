@@ -52,3 +52,5 @@ Author/Website URL, Content used from the source, Year published (if available),
 1. Users won't register with dupe emails
 
 1. Specific phone number format. Country code, area code, number always 1 digit, 3 digits, 7 digits respectively. All parts always present
+
+1. Every user has one login, every login has one associated user
