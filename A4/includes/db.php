@@ -194,6 +194,13 @@
 			return $allEmails;
 		}
 
+		/**
+		 * Fetches an email from a user's inbox/outbox
+		 * @param integer $emailID ID of email to fetch
+		 * @param integer $userID ID of user whose inbox to check
+		 * @param string $view 'inbox' or 'outbox' of chosen user
+		 * @return array Assoc-array with email datas
+		 */
 		function get_email($emailID, $userID, $view) {
 
 			// Validate input data
@@ -236,6 +243,107 @@
 			if (!$result) return $this->mySqlObj->error;
 			else if ($result->num_rows === 0) return "Email does not exist in this $view";
 			else return $result->fetch_assoc();
+		}
+
+		/**
+		 * Saves given email information to database
+		 * @param string $receiver Address of email receiver
+		 * @param string $senderID ID of user sending email
+		 * @param string $subject Email subject
+		 * @param string $message Email content
+		 * @param string $action 'save' or 'send', controls what tables
+		 * 						  this email will be inserted into
+		 * @param string $sender Address of email sender (can be 
+		 * 						 ignored/null if 'saving')
+		 * @return void|string Message if error, nothing otherwise
+		 */
+		function save_send_email($receiver, $senderID, $subject, $message, $action, $sender=null) {
+
+			// Sanitize and validate for database query
+			$receiver = $this->mySqlObj->real_escape_string($receiver);
+			$subject = $this->mySqlObj->real_escape_string($subject);
+			$message = $this->mySqlObj->real_escape_string($message);
+			$datetime = date("Y-m-d H:i:s");
+			if (!is_numeric($senderID)) return "Bad user ID: $senderID";
+
+			// Decide if this is a draft
+			if ($action == 'Send') {
+				$isDraft = 0;
+			} else if ($action == 'Save') {
+				$isDraft = 1;
+			} else {
+				return "Invalid Action: $action";
+			}
+
+			// Make insert query
+			$result = $this->mySqlObj->query(
+				"INSERT INTO je_email_sentdrafts(
+						je_sentdraft_to_email,
+						je_sentdraft_from_id,
+						je_sentdraft_subject,
+						je_sentdraft_content,
+						je_sentdraft_draft,
+						je_sentdraft_enc,
+						je_sentdraft_datetime
+					)
+				VALUES(
+						'{$receiver}',
+						{$senderID},
+						'{$subject}',
+						'{$message}',
+						$isDraft,
+						0,
+						'$datetime'
+					);"
+			);
+			if (!$result) return $this->mySqlObj->error;
+
+			// If email is being sent, try to put it in the appropriate
+			// user's inbox if they exist in our database
+			if ($action == 'Send' && $sender !== null) {
+
+				// Query to check if receiver email exists
+				$result = $this->mySqlObj->query(
+					"SELECT
+						je_user_id AS receiverID
+					FROM
+						je_users
+						JOIN je_login ON je_user_login_id = je_login_id
+					WHERE
+						je_login_email = '{$receiver}';"
+				);
+				// Return if error of user doesn't exist
+				if (!$result) {
+					return $this->mySqlObj->error;
+				} else if ($result->num_rows === 0) { 
+					return;
+				}
+
+				// Note: Assumes every user has a unique email address
+				$receiverID = $result->fetch_assoc()['receiverID'];
+				
+				// Insert into their inbox
+				$result = $this->mySqlObj->query(
+					"INSERT INTO je_inbox(
+							je_email_from_email,
+							je_email_to_id,
+							je_email_subject,
+							je_email_content,
+							je_email_enc,
+							je_date_received
+						)
+					VALUES(
+							'{$sender}',
+							{$receiverID},
+							'{$subject}',
+							'{$message}',
+							0,
+							'$datetime'
+						);"
+				);
+				if (!$result) return $this->mySqlObj->error;
+				
+			}
 		}
 
 	}

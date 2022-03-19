@@ -24,6 +24,7 @@ if (!isset($userData['userID'])) {
 
 $_SESSION['user-name'] = $userData['userName'];
 $_SESSION['user-id'] = $userData['userID'];
+$_SESSION['user-email'] = $email;
 header("Location: ../index.php");
 die();
 
