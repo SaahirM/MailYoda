@@ -78,6 +78,7 @@
 						<p class="card-text"><?php echo $email['content']; ?></p>
 					</div>
 					<div class="card-footer">Sent <?php echo $email['dateTime']; ?></div>
+					<?php if ($email['isEncrypted']) display_alert("This message is encrypted", 'info m-0') // Using param to pass extra style class ?>
 				</div>
 
 			<?php
@@ -140,12 +141,64 @@
 						<?php echo $email['isDraft'] ? "Saved" : "Sent"; ?>
 						<?php echo $email['dateTime']; ?>
 					</div>
+					<?php if ($email['isEncrypted']) display_alert("This message is encrypted", 'info m-0') // Using param to pass extra style class ?>
 				</div>
 
 			<?php
 		} else {
 			display_alert($email, "danger", "Error fetching email");
 		}
+	}
+
+	/**
+	 * Mangles certain string patterns by adding
+	 * its characters' ascii values % 16 to its
+	 * characters ascii values (ASCII shift)
+	 * @param string $str string to encrypt
+	 * @return string encrypted string
+	 */
+	function encrypt($str) {
+
+		// Patterns used to find emails and ph nums
+		// Note: Assumes sections of ph-num are not space seperated, and
+		// are 10 digits long (or 11 with country code)
+		$emailPattern = "/\w+@\w+\.\w+/";
+		$phNumPattern = "/^(\+?\d-?)?\(?\d{3}\)?-?(\d-?){7}$/";
+
+		// Break message into array of words
+		$wordArray = explode(' ', $str);
+
+		// Encrypt words that match patterns
+		$wordArray = preg_replace_callback(
+				[
+					"/c.+p/", "/T.+p/i", "/e.+t/i", "/a.+e/i", 
+					"/a.*w/i", "/c.+e/i", "/u.+e/",
+					$emailPattern, $phNumPattern
+				],
+				function ($match) {
+					$word = $match[0];
+					$newWord = "";
+
+					for ($i = 0; $i < strlen($word); $i++) {
+						$c = ord($word[$i]);
+						$c += ($c >= 33 && $c <= 126) ? ($c % 16) : 0;
+						if ($c > 126) $c -= 126; // Wrap numbers back into range
+						$newWord .= chr($c);
+					}
+					
+					return "\$eas\$" . $newWord;
+				},
+				$wordArray
+			);
+
+		// Join message array back into string
+		$str = "";
+		for ($i = 0; $i < count($wordArray) - 1; $i++) {
+			$str .= $wordArray[$i] . " ";
+		}
+		$str .= $wordArray[count($wordArray) - 1];
+
+		return $str;
 	}
 
 ?>

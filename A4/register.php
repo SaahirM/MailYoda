@@ -36,6 +36,11 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['token'])) {
         }
 
         // Verify input patterns with regex
+        /*
+           Note: Assumes specific phone number format:
+            Country code, area code, number always 1 digit, 3 digits, 7 digits respectively. 
+            All parts always present
+         */
         $isEmailValid = preg_match("/^\w+(\.\w+)?@(jediacademy\.edu|theforce\.org|dal\.ca)$/", $_REQUEST['email']);
         $isNamesValid = preg_match("/[A-Z]\w*/", $_REQUEST['fname']) && preg_match("/[A-Z]\w*/", $_REQUEST['lname']);
         $isPhNumValid = preg_match("/^\+?(\d)[-\s]?\(?(\d{3})\)?[-\s]?(\d{7})/", $_REQUEST['num'], $phNumDetails);

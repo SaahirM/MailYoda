@@ -251,13 +251,14 @@
 		 * @param string $senderID ID of user sending email
 		 * @param string $subject Email subject
 		 * @param string $message Email content
+		 * @param bool $isEnc Whether email is encrypted
 		 * @param string $action 'save' or 'send', controls what tables
 		 * 						  this email will be inserted into
 		 * @param string $sender Address of email sender (can be 
 		 * 						 ignored/null if 'saving')
 		 * @return void|string Message if error, nothing otherwise
 		 */
-		function save_send_email($receiver, $senderID, $subject, $message, $action, $sender=null) {
+		function save_send_email($receiver, $senderID, $subject, $message, $isEnc, $action, $sender=null) {
 
 			// Sanitize and validate for database query
 			$receiver = $this->mySqlObj->real_escape_string($receiver);
@@ -274,6 +275,9 @@
 			} else {
 				return "Invalid Action: $action";
 			}
+
+			// Convert $isEnc to integer
+			$isEnc = ($isEnc) ? 1 : 0;
 
 			// Make insert query
 			$result = $this->mySqlObj->query(
@@ -292,7 +296,7 @@
 						'{$subject}',
 						'{$message}',
 						$isDraft,
-						0,
+						$isEnc,
 						'$datetime'
 					);"
 			);
@@ -337,7 +341,7 @@
 							{$receiverID},
 							'{$subject}',
 							'{$message}',
-							0,
+							$isEnc,
 							'$datetime'
 						);"
 				);

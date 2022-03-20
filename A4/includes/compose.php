@@ -8,11 +8,13 @@ if (isset($_REQUEST['submit']) && ($_REQUEST['submit'] == 'Save' || $_REQUEST['s
 	$sender = $_SESSION['user-email'];
 	$subject = sanitize_data($_REQUEST['subject']);
 	$message = sanitize_data($_REQUEST['msg']);
+	$isEnc = isset($_REQUEST['isEncrypted']);
 
 	// Encrypt message?
+	if ($isEnc) $message = encrypt($message);
 
 	// Save to database
-	$error = $DB->save_send_email($receiver, $senderID, $subject, $message, $_REQUEST['submit'], $sender);
+	$error = $DB->save_send_email($receiver, $senderID, $subject, $message, $isEnc, $_REQUEST['submit'], $sender);
 	if ($error) {
 		$word = ($_REQUEST['submit'] == 'Save') ? "saving" : "sending";
 		display_alert($error, "danger", "Error $word email");

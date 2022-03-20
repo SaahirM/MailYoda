@@ -50,6 +50,10 @@ Author/Website URL, Content used from the source, Year published (if available),
 
 1. This stack-overflow thread (https://stackoverflow.com/questions/17798835/auto-increment-skipping-numbers) to fix a MySQL auto_increment bug @ 21:24 16-Mar-2022
 
+1. PHP Sandbox (https://sandbox.onlinephpfunctions.com/) for occasional tests. Accessed 20-Mar-2022
+
+1. PHP Live Regex (https://www.phpliveregex.com/) for occasional tests. Accessed 20-Mar-2022
+
 ## Assumptions
 1. Users won't register with dupe emails
 
