@@ -40,14 +40,18 @@
 
 		// Format them and echo
 		if (is_array($allEmails)) {
-			foreach ($allEmails as $email) {
-				?>
-					<a href="index.php?view=inbox&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
-						<span><?php echo $email['subj']; ?></span>
-						<div class="vr ms-auto"></div>
-						<span><?php echo $email['sender']; ?></span>
-					</a>
-				<?php
+			if (count($allEmails) === 0) {
+				display_alert("Inbox is empty", 'info');
+			} else {
+				foreach ($allEmails as $email) {
+					?>
+						<a href="index.php?view=inbox&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
+							<span><?php echo $email['subj']; ?></span>
+							<div class="vr ms-auto"></div>
+							<span><?php echo $email['sender']; ?></span>
+						</a>
+					<?php
+				}
 			}
 		} else {
 			display_alert($allEmails, "danger", "Error fetching emails");
@@ -100,14 +104,18 @@
 
 		// Format them and echo
 		if (is_array($allEmails)) {
-			foreach ($allEmails as $email) {
-				?>
-					<a href="index.php?view=sentdrafts&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
-						<span><?php echo $email['subj']; ?></span>
-						<div class="vr ms-auto"></div>
-						<span><?php echo $email['receiver']; ?></span>
-					</a>
-				<?php
+			if (count($allEmails) === 0) {
+				display_alert("Outbox is empty", 'info');
+			} else {
+				foreach ($allEmails as $email) {
+					?>
+						<a href="index.php?view=sentdrafts&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
+							<span><?php echo $email['subj']; ?></span>
+							<div class="vr ms-auto"></div>
+							<span><?php echo $email['receiver']; ?></span>
+						</a>
+					<?php
+				}
 			}
 		} else {
 			display_alert($allEmails, "danger", "Error fetching emails");
@@ -171,9 +179,9 @@
 		// Encrypt words that match patterns
 		$wordArray = preg_replace_callback(
 				[
+					$emailPattern, $phNumPattern, 
 					"/c.+p/", "/T.+p/i", "/e.+t/i", "/a.+e/i", 
-					"/a.*w/i", "/c.+e/i", "/u.+e/",
-					$emailPattern, $phNumPattern
+					"/a.*w/i", "/c.+e/i", "/u.+e/"
 				],
 				function ($match) {
 					$word = $match[0];
