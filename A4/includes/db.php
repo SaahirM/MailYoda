@@ -45,7 +45,7 @@
 				"SELECT
 					je_user_id AS userID,
 					IF(
-						je_user_lastname,
+						je_user_lastname != '',
 						CONCAT(je_user_firstname, ' ', je_user_lastname),
 						je_user_firstname
 					) AS userName,
@@ -117,8 +117,8 @@
 			);
 			if (!$result) return $this->mySqlObj->error;
 			$row = $result->fetch_row();
-			if (!$row) return "No ID returned";
-			$ID = $row[0];
+			if (!$row) return "No Login ID returned";
+			$LoginID = $row[0];
 
 			// ADD USER DATA
 			
@@ -137,7 +137,7 @@
 						je_user_suspended
 					)
 				VALUES
-					( ? , ? , $ID , 1 , 0 )"
+					( ? , ? , $LoginID , 1 , 0 );"
 			);
 
 			// Execute query
@@ -145,8 +145,18 @@
 			$stmt->bind_param('ss', $fname, $lname);
 			$stmt->execute();
 
+			// GET USER ID FOR RETURN
+			// Execute query
+			$result = $this->mySqlObj->query(
+				"SELECT MAX(je_user_id) FROM je_users;"
+			);
+			if (!$result) return $this->mySqlObj->error;
+			$row = $result->fetch_row();
+			if (!$row) return "No ID returned";
+			$userID = $row[0];
+
 			// RETURN
-			return $ID;
+			return $userID;
 		}
 
 		/**

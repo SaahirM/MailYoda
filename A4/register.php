@@ -17,7 +17,7 @@ foreach ($formKeys as $key) {
         break;
     }
 }
-if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['token'])) {
+if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
 
     // Validate file upload status and type
     /*
