@@ -66,7 +66,7 @@
 			if (!$result) {
 				return $this->mySqlObj->error;
 			} else if (!($userData = $result->fetch_assoc()) || !password_verify($pass, $userData['userPass'])) {
-				return "Failed Login";
+				return "Invalid Email-password combination";
 			} else {
 				// Don't want to return pass hash lol. I had to look this function up on php docs @ 23:12 12-Mar-2022
 				unset($userData['userPass']);

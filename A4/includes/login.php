@@ -18,7 +18,7 @@ $pass = sanitize_data($_REQUEST['pass']);
 $userData = $DB->auth_user($email, $pass);
 if (!isset($userData['userID'])) {
 	$userData = urlencode($userData);
-	header("Location: ../index.php?login=fail&error=$userData");
+	header("Location: ../index.php?error=$userData");
 	die();
 }
 

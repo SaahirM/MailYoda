@@ -26,6 +26,7 @@
             </div>
             <p>New to this MailYoda? <a href="register.php">Register here.</a></p>
         </form>
+        <?php if (isset($_REQUEST['error'])) display_alert(sanitize_data(urldecode($_REQUEST['error'])), 'danger', "Login Failed") ?>
 
     <?php } else if (!isset($_REQUEST['view']) || $_REQUEST['view'] == 'inbox') { 
         include "includes/inbox.php";

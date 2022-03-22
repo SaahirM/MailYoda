@@ -26,8 +26,10 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
      */
     $imageFileType = strtolower(pathinfo(basename($_FILES['pic']['name']),PATHINFO_EXTENSION));
     $acceptableFileTypes = ["jpg", "jpeg", "png"];
-    if ($_FILES["pic"]["error"] !== UPLOAD_ERR_OK || array_search($imageFileType, $acceptableFileTypes) === false) {
-        display_alert("File upload status: {$_FILES['pic']['error']}\nFile type: $imageFileType", "danger", "Error Uploading File");
+    if ($_FILES["pic"]["error"] !== UPLOAD_ERR_OK) {
+        display_alert("File upload status: {$_FILES['pic']['error']}", "danger", "Error Uploading File");
+    } else if (array_search($imageFileType, $acceptableFileTypes) === false) {
+        display_alert("Only JPG, JPEG and PNG files accepted", 'danger', "Error uploading file");
     } else {
 
         // Sanitize data
@@ -69,7 +71,7 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
                 // We're done registering! Return to homepage for login
                 header("Location: index.php");
             } else {
-                display_alert("Error message: '$ID'", "danger", "Error Updating database");
+                display_alert("Error message: $ID", "danger", "Error Updating database");
             }
         }
 
@@ -85,16 +87,25 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
             <input type="hidden" name="token" value="<?php echo $_SESSION['user-token']; ?>">
             <div class="col-12 my-2">
                 <label class="form-label" for="email">Email</label>
-                <input class="form-control" type="email" name="email" id="email" required>
+                <input class="form-control reg-email" type="email" name="email" id="email" required>
+                <div class="alert alert-warning d-none">
+                    Invalid Email. Must be in proper email format, with a <strong>dal.ca</strong>, <strong>theforce.org</strong> or <strong>jediacademy.edu</strong> domain
+                </div>
             </div>
             <div class="col-12 row row-cols-1 row-cols-md-2 pe-0">
 				<div class="pe-0">
 					<label class="form-label" for="fname">First Name</label>
-					<input class="form-control" type="text" name="fname" id="fname" required>
+					<input class="form-control reg-name" type="text" name="fname" id="fname" required>
+                    <div class="alert alert-warning d-none">
+                        First letter must be uppercase
+                    </div>
 				</div>
 				<div class="pe-0">
 					<label class="form-label" for="lname">Last Name</label>
-					<input class="form-control" type="text" name="lname" id="lname" required>
+					<input class="form-control reg-name" type="text" name="lname" id="lname" required>
+                    <div class="alert alert-warning d-none">
+                        First letter must be uppercase
+                    </div>
 				</div>
             </div>
             <div class="col-12 my-2">
@@ -103,7 +114,10 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
             </div>
             <div class="col-12 my-2">
                 <label class="form-label" for="num">Phone Number</label>
-				<input class="form-control" type="tel" name="num" id="num" required>
+				<input class="form-control reg-ph-num" type="tel" name="num" id="num" required>
+                <div class="alert alert-warning d-none">
+                    Invalid phone number. Must have a 1 digit country code and a 3 digit area code, followed by 7 continous digits
+                </div>
             </div>
             <div class="col-12 my-2">
                 <label class="form-label" for="pic">Upload Profile Image</label>
