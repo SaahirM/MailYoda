@@ -69,10 +69,13 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
                 move_uploaded_file($tmp_name, "img/$ID.$imageFileType");
 
                 // We're done registering! Return to homepage for login
-                header("Location: index.php");
+                header("Location: index.php?registration=success");
             } else {
                 display_alert("Error message: $ID", "danger", "Error Updating database");
             }
+        
+        } else {
+            display_alert("One or more of the fields below have invalid data", 'danger', "Registration Failed");
         }
 
     }
@@ -80,54 +83,51 @@ if ($isFormFilled && ($_REQUEST['token'] == $_SESSION['user-token'])) {
 }
 
 ?>
-
-<main class="container">
-	<form action="register.php" method="post" class="border border-dark row p-5 my-4" enctype="multipart/form-data">
-            <h2>Register for a MailYoda Account</h2>
-            <input type="hidden" name="token" value="<?php echo $_SESSION['user-token']; ?>">
-            <div class="col-12 my-2">
-                <label class="form-label" for="email">Email</label>
-                <input class="form-control reg-email" type="email" name="email" id="email" required>
-                <div class="alert alert-warning d-none">
-                    Invalid Email. Must be in proper email format, with a <strong>dal.ca</strong>, <strong>theforce.org</strong> or <strong>jediacademy.edu</strong> domain
-                </div>
+<form action="register.php" method="post" class="border border-2 border-dark row p-5" enctype="multipart/form-data">
+    <h2>Register for a MailYoda Account</h2>
+    <input type="hidden" name="token" value="<?php echo $_SESSION['user-token']; ?>">
+    <div class="col-12 my-2">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control reg-email" type="email" name="email" id="email" required>
+        <div class="alert alert-warning d-none">
+            Invalid Email. Must be in proper email format, with a <strong>dal.ca</strong>, <strong>theforce.org</strong> or <strong>jediacademy.edu</strong> domain
+        </div>
+    </div>
+    <div class="col-12 row row-cols-1 row-cols-md-2 pe-0">
+        <div class="pe-0">
+            <label class="form-label" for="fname">First Name</label>
+            <input class="form-control reg-name" type="text" name="fname" id="fname" required>
+            <div class="alert alert-warning d-none">
+                First letter must be uppercase
             </div>
-            <div class="col-12 row row-cols-1 row-cols-md-2 pe-0">
-				<div class="pe-0">
-					<label class="form-label" for="fname">First Name</label>
-					<input class="form-control reg-name" type="text" name="fname" id="fname" required>
-                    <div class="alert alert-warning d-none">
-                        First letter must be uppercase
-                    </div>
-				</div>
-				<div class="pe-0">
-					<label class="form-label" for="lname">Last Name</label>
-					<input class="form-control reg-name" type="text" name="lname" id="lname" required>
-                    <div class="alert alert-warning d-none">
-                        First letter must be uppercase
-                    </div>
-				</div>
+        </div>
+        <div class="pe-0">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-control reg-name" type="text" name="lname" id="lname" required>
+            <div class="alert alert-warning d-none">
+                First letter must be uppercase
             </div>
-            <div class="col-12 my-2">
-                <label class="form-label" for="pass">Password</label>
-                <input class="form-control" type="password" name="pass" id="pass" required>
-            </div>
-            <div class="col-12 my-2">
-                <label class="form-label" for="num">Phone Number</label>
-				<input class="form-control reg-ph-num" type="tel" name="num" id="num" required>
-                <div class="alert alert-warning d-none">
-                    Invalid phone number. Must have a 1 digit country code and a 3 digit area code, followed by 7 continous digits
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <label class="form-label" for="pic">Upload Profile Image</label>
-                <input class="form-control" type="file" name="pic" id="pic" required>
-            </div>
-            <div class="col-12 my-2 justify-content-end">
-                <input class="btn btn-success col-12 col-md-3" type="submit" value="Register">
-            </div>
-            <script src="js/register-validation.js"></script>
-        </form>
-</main>
+        </div>
+    </div>
+    <div class="col-12 my-2">
+        <label class="form-label" for="pass">Password</label>
+        <input class="form-control" type="password" name="pass" id="pass" required>
+    </div>
+    <div class="col-12 my-2">
+        <label class="form-label" for="num">Phone Number</label>
+        <input class="form-control reg-ph-num" type="tel" name="num" id="num" required>
+        <div class="alert alert-warning d-none">
+            Invalid phone number. Must have a 1 digit country code and a 3 digit area code, followed by 7 continous digits
+        </div>
+    </div>
+    <div class="col-12 my-2">
+        <label class="form-label" for="pic">Upload Profile Image</label>
+        <input class="form-control" type="file" name="pic" id="pic" required>
+    </div>
+    <div class="col-12 my-2 justify-content-end">
+        <input class="btn btn-success col-12 col-md-3" type="submit" value="Register">
+    </div>
+    <script src="js/register-validation.js"></script>
+</form>
 
 <?php require_once "includes/footer.php"; ?>

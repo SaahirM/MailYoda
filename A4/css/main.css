@@ -1,0 +1,68 @@
+/* Global colours and vars */
+
+/*
+	Citation
+	
+	Used Coolors (https://coolors.co/) for
+	help picking colour pallete.
+	Accessed 21:22 22-Mar-2022
+*/
+body {
+	background-color: #E3DAE7;
+}
+
+header {
+	background-color: #4A314D;
+	color: white;
+}
+
+footer {
+	background-color: #053225;
+	color: white;
+}
+
+/* Overrides */
+.list-group-item {
+	background-color: unset;
+}
+
+.form-check > input, .form-check > label {
+	cursor: pointer;
+}
+
+.navbar-nav .dropdown-menu {
+	position: absolute;
+	right: 0;
+	left: unset;
+}
+
+/* Page Sizing */
+main {
+	min-height: 80vh;
+}
+
+/* Make anchors dark-friendly */
+header a, .nav-link {
+	color: #D7DDEA;
+}
+header a:hover, .nav-link:hover, .nav-link:focus {
+	color: white;
+}
+
+footer a {
+	color: aquamarine;
+}
+footer a:hover {
+	color: aqua;
+}
+
+/* Some colours */
+.card {
+	background-color: aliceblue;
+}
+form {
+	background-color: #D7E8EA;
+}
+.select-email {
+	background-color: aliceblue;
+}

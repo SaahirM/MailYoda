@@ -10,7 +10,7 @@
 	function sanitize_data($rawData) {
 		$data = trim($rawData);
 		$data = htmlspecialchars($data);
-		$data = stripslashes($rawData);
+		$data = stripslashes($data);
 		return $data;
 	}
 
@@ -45,7 +45,7 @@
 			} else {
 				foreach ($allEmails as $email) {
 					?>
-						<a href="index.php?view=inbox&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
+						<a href="index.php?view=inbox&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action select-email hstack gap-2 py-3">
 							<span><?php echo $email['subj']; ?></span>
 							<div class="vr ms-auto"></div>
 							<span><?php echo $email['sender']; ?></span>
@@ -109,7 +109,7 @@
 			} else {
 				foreach ($allEmails as $email) {
 					?>
-						<a href="index.php?view=sentdrafts&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action hstack gap-2">
+						<a href="index.php?view=sentdrafts&email=<?php echo $email['ID']; ?>" class="list-group-item list-group-item-action select-email hstack gap-2 py-3">
 							<span><?php echo $email['subj']; ?></span>
 							<div class="vr ms-auto"></div>
 							<span><?php echo $email['receiver']; ?></span>

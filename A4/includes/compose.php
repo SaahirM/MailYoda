@@ -23,32 +23,32 @@ if (isset($_REQUEST['submit']) && ($_REQUEST['submit'] == 'Save' || $_REQUEST['s
 }
 
 ?>
-
-<form action="index.php?view=compose" method="post" class="container border border-dark p-3">
+<h2>Compose</h2>
+<form action="index.php?view=compose" method="post" class="container border border-2 border-dark p-3">
 	<div class="row">
-		<div class="col col-12 col-md-6">
+		<div class="col col-12 col-md-6 my-2">
 			<label class="form-label" for="receiver">To:</label>
 			<input class="form-control" type="email" name="receiver" id="receiver">
 		</div>
-		<div class="col col-12 col-md-6">
+		<div class="col col-12 col-md-6 my-2">
 			<label class="form-label" for="sender">From:</label>
 			<input class="form-control" type="email" name="sender" id="sender" value="<?php echo $_SESSION['user-email'] ?>" disabled>
 		</div>
-		<div class="col col-12">
+		<div class="col col-12 my-2">
 			<label class="form-label" for="subject">Subject:</label>
 			<input class="form-control" type="text" name="subject" id="subject">
 		</div>
-		<div class="col col-12">
+		<div class="col col-12 my-2">
 			<label class="form-label" for="msg">Message:</label>
 			<textarea class="form-control" name="msg" id="msg" rows="10"></textarea>
 		</div>
-		<div class="col col-12">
+		<div class="col col-12 my-2">
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" role="switch" id="isEncrypted" name="isEncrypted">
 				<label class="form-check-label" for="isEncrypted">Encrypt Email</label>
 			</div>
 		</div>
-		<div class="col col-12">
+		<div class="col col-12 my-2">
 			<div class="row justify-content-between">
 				<div class="col col-auto">
 					<input class="btn btn-lg px-sm-5 btn-secondary" type="submit" value="Save" name="submit">
