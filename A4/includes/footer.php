@@ -1,7 +1,9 @@
-		<!-- JS | Bootstrap from https://getbootstrap.com/ @ 18:07 11-Mar-2022 -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+			<!-- JS | Bootstrap from https://getbootstrap.com/ @ 18:07 11-Mar-2022 -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-		<!-- Footer slightly adapted from A3 footer (Email Raghav?) -->
+		
+		</main>
+		<!-- Footer slightly adapted from A3 footer -->
 		<footer class="container-fluid py-2">
 			<div class="row">
 				<div class="col-12 col-sm-8">
@@ -20,3 +22,4 @@
 
 	</body>
 </html>
+<?php ob_end_flush(); ?>
