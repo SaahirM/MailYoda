@@ -1,4 +1,4 @@
-# YodaMail
+# MailYoda
 
 - Author: Saahir Monowar (@SaahirM)
 - Upload Date: 27-Apr-2022
@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- A MySQL database called "jedi_encrypted_email", with 4 tables set-up according to this [ERD](https://github.com/SaahirM/YodaMail/blob/main/img/MailYoda_ERD.png) created by Raghav Sampangi for an assignment
+- A MySQL database called "jedi_encrypted_email", with 4 tables set-up according to this [ERD](https://github.com/SaahirM/MailYoda/blob/main/img/MailYoda_ERD.png) created by Raghav Sampangi for an assignment
 	- This should be a local database, accessed with username "root" and password "root"
 
 ## Citations/Attributions
